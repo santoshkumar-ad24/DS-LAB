@@ -1,7 +1,66 @@
 #include <stdio.h>
-#include <stdlib.h>
 #define SIZE 10
 
-int queue[SIZE];
-int rear =0, front=0;
+int deque[SIZE];
+int front = -1, rear = -1;
+
+int isFull() {
+    return (front == 0 && rear == SIZE - 1) || (front == rear + 1);
+}
+
+int isEmpty() {
+    return front == -1;
+}
+
+void insertFront(int value) {
+    if (isFull()) return;
+    if (isEmpty()) front = rear = 0;
+    else if (front == 0) front = SIZE - 1;
+    else front--;
+    deque[front] = value;
+}
+
+void insertRear(int value) {
+    if (isFull()) return;
+    if (isEmpty()) front = rear = 0;
+    else if (rear == SIZE - 1) rear = 0;
+    else rear++;
+    deque[rear] = value;
+}
+
+void deleteFront() {
+    if (isEmpty()) return;
+    if (front == rear) front = rear = -1;
+    else if (front == SIZE - 1) front = 0;
+    else front++;
+}
+
+void deleteRear() {
+    if (isEmpty()) return;
+    if (front == rear) front = rear = -1;
+    else if (rear == 0) rear = SIZE - 1;
+    else rear--;
+}
+
+void display() {
+    if (isEmpty()) return;
+    int i = front;
+    while (1) {
+        printf("%d ", deque[i]);
+        if (i == rear) break;
+        i = (i + 1) % SIZE;
+    }
+    printf("\n");
+}
+
+int main() {
+    insertRear(10);
+    insertRear(20);
+    insertFront(5);
+    display();        // Output: 5 10 20
+    deleteFront();
+    deleteRear();
+    display();        // Output: 10
+    return 0;
+}
 
